@@ -7,8 +7,4 @@
     <string name="Android_features">Android features</string>
     <string name="Select_a_feature">Select a feature</string>
     <string name="Feature_list">Feature list</string>
-
-    <!-- Broadcast Receivers -->
-    <string name="Airplane_mode_change">Airplane mode change</string>
-    <string name="Battery_change">Battery change</string>
 </resources>

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.asentris.exampleandroidfeatures.broadcastReceiver.DialogBroadcastReceiver
+import com.asentris.exampleandroidfeatures.contentProvider.DialogContentProvider
 import com.asentris.exampleandroidfeatures.core.extension.getArrayAdapter
 import com.asentris.exampleandroidfeatures.core.extension.hideSoftKeyboard
 import com.asentris.exampleandroidfeatures.databinding.FragEntryBinding
@@ -31,7 +32,9 @@ class FragEntry : Fragment() {
             setOnItemClickListener { parent, _, position, _ ->
                 when (parent.getItemAtPosition(position) as FeatureList) {
                     FeatureList.BroadcastReceiver ->
-                        DialogBroadcastReceiver().show(parentFragmentManager, "AirplaneModeChange")
+                        DialogBroadcastReceiver().show(parentFragmentManager, "DBroadcastReceiver")
+                    FeatureList.ContentProvider ->
+                        DialogContentProvider().show(parentFragmentManager, "DContentProvider")
                 }
             }
         }
