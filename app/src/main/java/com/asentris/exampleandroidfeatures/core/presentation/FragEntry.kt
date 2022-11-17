@@ -10,6 +10,7 @@ import com.asentris.exampleandroidfeatures.contentProvider.DialogContentProvider
 import com.asentris.exampleandroidfeatures.core.extension.getArrayAdapter
 import com.asentris.exampleandroidfeatures.core.extension.hideSoftKeyboard
 import com.asentris.exampleandroidfeatures.databinding.FragEntryBinding
+import com.asentris.exampleandroidfeatures.intent.DialogIntent
 
 class FragEntry : Fragment() {
 
@@ -35,6 +36,8 @@ class FragEntry : Fragment() {
                         DialogBroadcastReceiver().show(parentFragmentManager, "DBroadcastReceiver")
                     FeatureList.ContentProvider ->
                         DialogContentProvider().show(parentFragmentManager, "DContentProvider")
+                    FeatureList.Intent ->
+                        DialogIntent().show(parentFragmentManager, "DIntent")
                 }
             }
         }
