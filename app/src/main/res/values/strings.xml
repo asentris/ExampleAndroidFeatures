@@ -9,6 +9,10 @@
     <string name="Select_a_feature">Select a feature</string>
     <string name="Feature_list">Feature list</string>
 
+    <!-- linear_layout.xml -->
+    <string name="Service_started">Service started</string>
+    <string name="Service_stopped">Service stopped</string>
+
     <!-- Second Activity -->
     <string name="Second_Activity">Second Activity</string>
     <string name="Second_Activity_Fragment">Second Activity Fragment</string>

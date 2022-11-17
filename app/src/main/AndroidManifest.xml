@@ -31,6 +31,8 @@
             android:exported="false"
             android:label="@string/Second_Activity"
             android:theme="@style/Theme.ExampleAndroidFeatures.NoActionBar" />
+
+        <service android:name=".service.SimpleService" />
     </application>
 
 </manifest>
