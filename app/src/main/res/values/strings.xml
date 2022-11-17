@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">ExampleAndroidFeatures</string>
     <string name="action_settings">Settings</string>
+    <string name="Switch">Switch</string>
 
     <!-- Entry Fragment -->
     <string name="Android_features">Android features</string>
