@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SwitchCompat
 import com.asentris.exampleandroidfeatures.R
 import com.asentris.exampleandroidfeatures.core.presentation.BaseDialogFragment
+import com.asentris.exampleandroidfeatures.core.presentation.second.SecondActivity
 import com.asentris.exampleandroidfeatures.databinding.LinearLayoutBinding
 
 class DialogIntent : BaseDialogFragment() {
@@ -37,18 +38,19 @@ class DialogIntent : BaseDialogFragment() {
             switch.setOnCheckedChangeListener { _, isChecked ->
                 when (item) {
                     IntentList.SEND_EMAIL -> if (isChecked) sendEmail()
+                    IntentList.START_ACTIVITY -> if (isChecked) startSecondActivity()
                 }
             }
         }
     }
 
     private fun sendEmail() {
-        val sendEmail = Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:") //use only email apps
+        val sendEmail = Intent(Intent.ACTION_SENDTO).also { intent ->
+            intent.data = Uri.parse("mailto:") //use only email apps
             // recipients
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.blank_email)))
-            putExtra(Intent.EXTRA_SUBJECT, "This is the email subject")
-            putExtra(
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.blank_email)))
+            intent.putExtra(Intent.EXTRA_SUBJECT, "This is the email subject")
+            intent.putExtra(
                 Intent.EXTRA_TEXT, """Hello,
                             |
                             |This is the email contents.
@@ -60,6 +62,13 @@ class DialogIntent : BaseDialogFragment() {
         }
         if (sendEmail.resolveActivity(requireActivity().packageManager) != null)
             startActivity(sendEmail)
+    }
+
+    private fun startSecondActivity() {
+        // manifest defines second activity
+        Intent(requireActivity(), SecondActivity::class.java).also { intent ->
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {

@@ -46,6 +46,7 @@ class DialogContentProvider : BaseDialogFragment() {
     }
 
     private fun requestContactsReadPermission() {
+        // manifest defines contacts read permission, but must request from user
         //Todo (request permissions on button click)
         getContacts()?.forEach { println(it) }
     }

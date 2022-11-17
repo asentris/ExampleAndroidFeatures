@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp"
-    tools:context=".core.presentation.FragEntry">
+    tools:context=".core.presentation.main.FragEntry">
 
     <TextView
         android:id="@+id/val_header"

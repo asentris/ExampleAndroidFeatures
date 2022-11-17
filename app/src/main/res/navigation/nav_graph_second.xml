@@ -2,12 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
+    android:id="@+id/nav_graph_second"
     app:startDestination="@id/FirstFragment">
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.asentris.exampleandroidfeatures.core.presentation.FragEntry"
-        android:label="@string/Android_features"
-        tools:layout="@layout/frag_entry" />
+        android:name="com.asentris.exampleandroidfeatures.core.presentation.second.FirstFragment"
+        android:label="@string/Second_Activity_Fragment"
+        tools:layout="@layout/frag_second_first" />
 </navigation>

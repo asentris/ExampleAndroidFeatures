@@ -1,4 +1,4 @@
-package com.asentris.exampleandroidfeatures.core.presentation
+package com.asentris.exampleandroidfeatures.core.presentation.main
 
 class FragEntryVM {
 

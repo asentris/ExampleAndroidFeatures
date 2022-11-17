@@ -1,4 +1,4 @@
-package com.asentris.exampleandroidfeatures.core.presentation
+package com.asentris.exampleandroidfeatures.core.presentation.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,19 +9,19 @@ import com.asentris.exampleandroidfeatures.broadcastReceiver.DialogBroadcastRece
 import com.asentris.exampleandroidfeatures.contentProvider.DialogContentProvider
 import com.asentris.exampleandroidfeatures.core.extension.getArrayAdapter
 import com.asentris.exampleandroidfeatures.core.extension.hideSoftKeyboard
-import com.asentris.exampleandroidfeatures.databinding.FragEntryBinding
+import com.asentris.exampleandroidfeatures.databinding.FragMainEntryBinding
 import com.asentris.exampleandroidfeatures.intent.DialogIntent
 
 class FragEntry : Fragment() {
 
-    private var _binding: FragEntryBinding? = null
+    private var _binding: FragMainEntryBinding? = null
     private val binding get() = _binding!!
     private val fragEntryVM = FragEntryVM()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragEntryBinding.inflate(inflater, container, false)
+        _binding = FragMainEntryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
