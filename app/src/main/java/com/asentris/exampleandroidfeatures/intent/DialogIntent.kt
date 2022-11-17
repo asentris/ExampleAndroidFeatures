@@ -53,32 +53,12 @@ class DialogIntent : BaseDialogFragment() {
             layoutLinear.addView(switch, layoutLinear.childCount)
             switch.setOnCheckedChangeListener { _, isChecked ->
                 when (item) {
-                    IntentList.SEND_EMAIL -> if (isChecked) sendEmail()
-                    IntentList.START_ACTIVITY -> if (isChecked) startSecondActivity()
-                    IntentList.SELECT_AND_SHOW_IMAGE -> if (isChecked) selectAndShowImage()
+                    IntentList.EXPLICIT_START_ACTIVITY -> if (isChecked) startSecondActivity()
+                    IntentList.IMPLICIT_SELECT_AND_SHOW_IMAGE -> if (isChecked) selectAndShowImage()
+                    IntentList.IMPLICIT_SEND_EMAIL -> if (isChecked) sendEmail()
                 }
             }
         }
-    }
-
-    private fun sendEmail() {
-        val sendEmail = Intent(Intent.ACTION_SENDTO).also { intent ->
-            intent.data = Uri.parse("mailto:") //use only email apps
-            // recipients
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.blank_email)))
-            intent.putExtra(Intent.EXTRA_SUBJECT, "This is the email subject")
-            intent.putExtra(
-                Intent.EXTRA_TEXT, """Hello,
-                            |
-                            |This is the email contents.
-                            |
-                            |
-                            |V/R,
-                            |Sender""".trimMargin()
-            )
-        }
-        if (sendEmail.resolveActivity(requireActivity().packageManager) != null)
-            startActivity(sendEmail)
     }
 
     private fun startSecondActivity() {
@@ -107,6 +87,26 @@ class DialogIntent : BaseDialogFragment() {
             popupWindow.showAtLocation(binding.root, Gravity.CENTER, 0, 0)
             popupView.setOnClickListener { popupWindow.dismiss() }
         }
+    }
+
+    private fun sendEmail() {
+        val sendEmail = Intent(Intent.ACTION_SENDTO).also { intent ->
+            intent.data = Uri.parse("mailto:") //use only email apps
+            // recipients
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.blank_email)))
+            intent.putExtra(Intent.EXTRA_SUBJECT, "This is the email subject")
+            intent.putExtra(
+                Intent.EXTRA_TEXT, """Hello,
+                            |
+                            |This is the email contents.
+                            |
+                            |
+                            |V/R,
+                            |Sender""".trimMargin()
+            )
+        }
+        if (sendEmail.resolveActivity(requireActivity().packageManager) != null)
+            startActivity(sendEmail)
     }
 
     override fun onDestroyView() {
