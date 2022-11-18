@@ -4,11 +4,13 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import kotlinx.coroutines.*
 
 /** Manifest defines service */
 class SimpleService : Service() {
 
     private val TAG: String = this::class.java.simpleName
+    private var job: Job? = null
 
     init {
         Log.d(TAG, "Service::init")
@@ -19,6 +21,20 @@ class SimpleService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val dataString: String? = intent?.getStringExtra("EXTRA_DATA")
         dataString?.let { Log.d(TAG, dataString) }
+
+        // run long running task on different thread
+        Thread {
+            // if statement prevents starting multiple coroutines since onStartCommand can run many times
+            // alternatively, the job can be cancelled and restarted if desired
+            if (job == null) job = CoroutineScope(Dispatchers.IO).launch {
+                var count = 0
+                while (true) {
+                    Log.d(TAG, "Service count: $count")
+                    count++
+                    delay(2000)
+                }
+            }
+        }.start()
 
         // if system kills service, it won't be recreated
         val startNotSticky = START_NOT_STICKY
@@ -31,6 +47,7 @@ class SimpleService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        job?.cancel()
         Log.d(TAG, "Service::onDestroy")
     }
 }
