@@ -1,9 +1,4 @@
 .DS_Store
-app/src/main/assets/HeroSearch*.db
-app/src/main/assets/card
-app/src/main/assets/picture
-app/src/main/res/drawable-v3/
-app/src/main/res/values/strings_other.xml
 signing.properties
 
 # Android Profiling
