@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.asentris.exampleandroidfeatures">
 
+    <!-- https://developer.android.com/training/permissions -->
+    <!-- https://developer.android.com/guide/topics/permissions/overview -->
+    <!-- https://developer.android.com/reference/android/Manifest.permission -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <!-- Legacy bluetooth permissions (API <= 30) -->

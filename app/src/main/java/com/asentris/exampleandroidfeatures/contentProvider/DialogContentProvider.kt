@@ -1,5 +1,7 @@
 package com.asentris.exampleandroidfeatures.contentProvider
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
@@ -8,16 +10,36 @@ import android.provider.ContactsContract.CommonDataKinds.Email
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.asentris.exampleandroidfeatures.R
 import com.asentris.exampleandroidfeatures.core.presentation.BaseDialogFragment
 import com.asentris.exampleandroidfeatures.databinding.LinearLayoutBinding
-
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class DialogContentProvider : BaseDialogFragment() {
 
     private var _binding: LinearLayoutBinding? = null
     private val binding get() = _binding!!
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                when (isGranted) {
+                    true -> showRandomContact()
+                    false -> Unit
+                }
+            }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -39,22 +61,23 @@ class DialogContentProvider : BaseDialogFragment() {
             layoutLinear.addView(switch, layoutLinear.childCount)
             switch.setOnCheckedChangeListener { _, isChecked ->
                 when (item) {
-                    ContentProviderList.CONTACTS -> if (isChecked) requestContactsReadPermission()
+                    ContentProviderList.CONTACTS -> if (isChecked) readContacts()
                 }
             }
         }
     }
 
-    private fun requestContactsReadPermission() {
-        // manifest defines contacts read permission, but must request from user
-        //Todo (request permissions on button click)
-        getContacts()?.forEach { println(it) }
+    // manifest defines contacts read permission, but must request from user
+    private fun readContacts() {
+        when (checkIfReadContactsIsGranted()) {
+            PackageManager.PERMISSION_GRANTED -> showRandomContact()
+            PackageManager.PERMISSION_DENIED ->
+                requestPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
+        }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+    private fun checkIfReadContactsIsGranted(): Int =
+        ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS)
 
     private fun getContacts(): List<SampleContact?>? {
         val contResv = requireContext().contentResolver
@@ -104,6 +127,32 @@ class DialogContentProvider : BaseDialogFragment() {
         }
         csr?.close()
         return allContacts
+    }
+
+    private fun showRandomContact() {
+        lifecycleScope.launch {
+            isCancelable = false
+            val deferred: Deferred<SampleContact?> = async(Dispatchers.Default) {
+                val contacts = getContacts()
+                val randomNumber: Int = (Math.random() * (contacts?.size ?: 1) - 1).toInt()
+                getContacts()?.get(randomNumber)
+            }
+            val contact: SampleContact? = deferred.await()
+            val name = contact?.name
+            val number = contact?.phoneNumber
+            Toast.makeText(context, "$name / $number", Toast.LENGTH_SHORT).show()
+            isCancelable = true
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        requestPermissionLauncher.unregister()
     }
 }
 
